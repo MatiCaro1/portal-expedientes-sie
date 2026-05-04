@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from '../header/header';
 import { FooterComponent } from '../footer/footer';
 
@@ -6,7 +7,7 @@ import { FooterComponent } from '../footer/footer';
   selector: 'app-main-layout',
   standalone: true,
   //imports: [],
-  imports: [HeaderComponent, FooterComponent], // 👈 obligatorio
+  imports: [RouterOutlet,HeaderComponent, FooterComponent], // 👈 obligatorio
   templateUrl: './main-layout.html'
 })
 export class MainLayoutComponent {}
