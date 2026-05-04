@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Titulo } from './titulo';
+import { InicioViewComponent } from './inicio-view';
 
-describe('Titulo', () => {
-  let component: Titulo;
-  let fixture: ComponentFixture<Titulo>;
+describe('InicioViewComponent', () => {
+  let component: InicioViewComponent;
+  let fixture: ComponentFixture<InicioViewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Titulo],
+      imports: [InicioViewComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Titulo);
+    fixture = TestBed.createComponent(InicioViewComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
