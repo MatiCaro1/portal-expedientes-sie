@@ -11,3 +11,9 @@
   --footer-height-auth: 80px;
   --footer-font: Roboto, 'Helvetica Neue', sans-serif;
 }
+  .footer__logo {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+    /*margin-bottom: 4px;*/
+  }
