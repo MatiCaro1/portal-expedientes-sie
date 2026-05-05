@@ -1,7 +1,11 @@
 <app-header></app-header>
 
-<main>
-  <ng-content></ng-content>
-</main>
+<div class="layout-body">
+  <app-sidebar></app-sidebar>
+
+  <main class="main-content">
+    <ng-content></ng-content>
+  </main>
+</div>
 
 <app-footer></app-footer>

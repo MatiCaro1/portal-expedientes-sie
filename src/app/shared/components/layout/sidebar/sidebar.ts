@@ -1,0 +1,32 @@
+import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+
+interface NavItem {
+  label: string;
+  route: string;
+  icon: string;
+  badge?: string;
+  subtitle?: string;
+}
+
+@Component({
+  selector: 'app-sidebar',
+  standalone: true,
+  imports: [RouterLink, RouterLinkActive],
+  templateUrl: './sidebar.html',
+  styleUrl: './sidebar.css'
+})
+export class SidebarComponent {
+  user = {
+    name: 'Juan Soto',
+    area: 'Fiscalía'
+  };
+
+  navItems: NavItem[] = [
+    { label: 'Mis Expedientes', route: '/expedientes', icon: 'inbox', badge: '3', subtitle: '3 expedientes activos' },
+    { label: 'Home', route: '/', icon: 'home' },
+    { label: 'Configuración', route: '/configuracion', icon: 'settings' },
+    { label: 'Ayuda', route: '/ayuda', icon: 'help' },
+    { label: 'Cerrar sesión', route: '/login', icon: 'logout' }
+  ];
+}
