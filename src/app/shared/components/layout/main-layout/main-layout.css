@@ -1,6 +1,7 @@
 :host {
   --sidebar-w: 260px;
   --topbar-h: 56px;
+  --footer-h: 100px;
 }
 
 .layout-body {
@@ -10,9 +11,9 @@
 }
 
 .main-content {
-  margin-left: var(--sidebar-w);
+  margin-left: 260px;
   flex: 1;
-  padding: 1.5rem 2rem 2rem;
+  padding: 1.5rem 2rem 100px;
   background: #f6f8fa;
-  min-height: calc(100vh - var(--topbar-h));
+  min-height: calc(100vh - 200px);
 }

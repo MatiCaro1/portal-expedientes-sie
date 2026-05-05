@@ -20,7 +20,7 @@
   padding: 0 32px;
   max-width: 1280px;
   margin: 0 auto;
-  height: var(--footer-height-main);
+  height: 100px;
   gap: 24px;
 }
 
