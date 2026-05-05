@@ -1,13 +1,41 @@
-/* You can add global styles to this file, and also import other style files */
-/* styles.css */
 :root {
+  --sidebar-w: 260px;
+  --topbar-h: 56px;
+  --footer-h: 100px;
+
   --footer-bg-image: url('/assets/images/footer.png');
   --footer-bg-color: #0d1b3e;
   --footer-text-light: #ffffff;
   --footer-text-muted: rgba(255, 255, 255, 0.6);
   --footer-link-color: rgba(255, 255, 255, 0.85);
   --footer-link-hover: #ffffff;
-  --footer-height-main: 80px;
-  --footer-height-auth: 80px;
   --footer-font: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: var(--footer-h + 20 px);
+  width: var(--sidebar-w);
+  background: #ffffff;
+  border-right: 1px solid #e0e0e0;
+  z-index: 150;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.footer__logo {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
 }

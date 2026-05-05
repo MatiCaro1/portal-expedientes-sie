@@ -17,15 +17,13 @@ export class FooterComponent {
   readonly currentYear = new Date().getFullYear();
   readonly systemName = 'Portal Expedientes SIE';
   readonly systemVersion = '1.0.0';
-  readonly orgName = 'Nombre Organismo Público';
-  readonly orgPhone = '+56 2 2549 1000';
-  readonly siteUrl = 'https://sie.cl';
-  readonly siteName = 'sie.cl';
+  readonly orgName = 'Superintendecia de Educación';
+  readonly siteUrl = 'https://www.supereduc.cl/';
+  readonly siteName = 'SIE.cl';
 
   readonly mainLinks = [
     { label: 'Términos de uso',        href: '/terminos'   },
     { label: 'Política de privacidad', href: '/privacidad' },
-    { label: 'Accesibilidad',          href: '/accesibilidad' },
     { label: 'Mesa de ayuda',          href: '/ayuda'      },
 
   ];
