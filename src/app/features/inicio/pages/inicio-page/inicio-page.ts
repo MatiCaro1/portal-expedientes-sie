@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { ViewComponent } from '../../components/view/view';
-import { MainLayoutComponent } from '@shared/components/layout/main-layout/main-layout';
+import { InicioViewComponent } from '../../components/inicio-view/inicio-view';
 
 @Component({
   standalone: true,
   selector: 'app-inicio-page',
-  imports: [ViewComponent, MainLayoutComponent], // 👈 AQUÍ
+  imports: [InicioViewComponent],
   templateUrl: './inicio-page.html'
 })
 export class InicioPage {
