@@ -1,1 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+/* styles.css */
+:root {
+  --footer-bg-image: url('/assets/images/footer.png');
+  --footer-bg-color: #0d1b3e;
+  --footer-text-light: #ffffff;
+  --footer-text-muted: rgba(255, 255, 255, 0.6);
+  --footer-link-color: rgba(255, 255, 255, 0.85);
+  --footer-link-hover: #ffffff;
+  --footer-height-main: 80px;
+  --footer-height-auth: 80px;
+  --footer-font: Roboto, 'Helvetica Neue', sans-serif;
+}

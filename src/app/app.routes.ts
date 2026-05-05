@@ -9,13 +9,13 @@ import { InicioPage } from './features/inicio/pages/inicio-page/inicio-page';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'auth/login',
     pathMatch: 'full'
   },
 
   // 🔐 AUTH
   {
-    path: '',
+    path: 'auth',
     component: AuthLayoutComponent,
     children: [
       {
@@ -27,7 +27,7 @@ export const routes: Routes = [
 
   // 🏠 APP
   {
-    path: '',
+    path: 'app',
     component: MainLayoutComponent,
     children: [
       {

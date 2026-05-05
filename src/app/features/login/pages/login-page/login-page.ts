@@ -12,6 +12,6 @@ export class LoginPage {
   constructor(private router: Router) {}
 
   irInicio() {
-    this.router.navigate(['/inicio']);
+    this.router.navigate(['/app/inicio']);
   }
 }
