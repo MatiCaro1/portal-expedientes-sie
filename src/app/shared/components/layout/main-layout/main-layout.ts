@@ -8,7 +8,7 @@ import { SidebarComponent } from '../sidebar/sidebar';
   selector: 'app-main-layout',
   standalone: true,
   //imports: [],
-  imports: [RouterOutlet,HeaderComponent, FooterComponent],
+  imports: [RouterOutlet,HeaderComponent, FooterComponent,SidebarComponent],
   templateUrl: './main-layout.html'
 })
 export class MainLayoutComponent {}
