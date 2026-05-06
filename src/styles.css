@@ -1,37 +1,95 @@
+/* =========================
+   VARIABLES GLOBALES
+========================= */
 :root {
   --sidebar-w: 260px;
-  --topbar-h: 200px;
+  --header-h: 100px;
   --footer-h: 100px;
 
+  /* Header */
+  --header-bg-image: url('/assets/images/sie_header.png');
+  --header-bg-color: #0d1b3e;
+  --header-text-light: #ffffff;
+
+  /* Footer */
   --footer-bg-image: url('/assets/images/footer.png');
   --footer-bg-color: #0d1b3e;
   --footer-text-light: #ffffff;
-  --footer-text-muted: rgba(255, 255, 255, 0.6);
-  --footer-link-color: rgba(255, 255, 255, 0.85);
-  --footer-link-hover: #ffffff;
-  --footer-font: Roboto, 'Helvetica Neue', sans-serif;
 }
 
-.sidebar {
-  position: fixed;
-  top: var(--topbar-h);
-  left: 0;
-  bottom: var(--footer-h + 20 px);
-  width: var(--sidebar-w);
-  background: #ffffff;
-  border-right: 1px solid #e0e0e0;
-  z-index: 150;
+/* =========================
+   RESET BASE
+========================= */
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+/* =========================
+   LAYOUT GENERAL
+========================= */
+.main-layout {
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  min-height: 100vh;
 }
 
-.footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
+.layout-container {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.layout-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* =========================
+   LAYOUT AUTH
+========================= */
+.auth-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  --header-h: 200px;
+  --footer-h: 100px;
+}
+
+/* =========================
+   HEADER
+========================= */
+app-main-header,
+app-auth-header {
+  height: var(--header-h);
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Header interno (auth) */
+.auth-header {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.auth-header__inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* =========================
+   FOOTER
+========================= */
+app-footer {
+  height: var(--footer-h);
+  flex-shrink: 0;
+  display: block;
 }
 
 .footer__logo {
@@ -39,17 +97,45 @@
   width: auto;
   object-fit: contain;
 }
-.main-content {
-  margin-left: 260px;
-  flex: 1;
-  padding: 1.5rem 2rem 120px;
-  background: #f6f8fa;
-  min-height: calc(100vh - 56px - 100px);
+
+/* =========================
+   SIDEBAR
+========================= */
+app-sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  background: #fff;
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
 }
-.auth-content {
-  margin-left: 260px;
+
+/* =========================
+   CONTENIDO PRINCIPAL
+========================= */
+.main-content {
   flex: 1;
-  padding: 1.5rem 2rem 120px;
+  min-width: 0;
+  overflow: auto;
+  padding: 1.5rem 2rem;
   background: #f6f8fa;
-  min-height: calc(100vh - 56px - 100px);
+}
+
+/* =========================
+   CONTENIDO AUTH
+========================= */
+.auth-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 2rem;
+  background: #f6f8fa;
+}
+
+/* =========================
+   UTILIDADES
+========================= */
+.header_auth {
+  height: var(--header-h);
 }

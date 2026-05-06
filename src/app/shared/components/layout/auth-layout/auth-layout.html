@@ -1,9 +1,9 @@
-<header>
+<div class="auth-layout">
+  <app-auth-header></app-auth-header>
 
-</header>
+  <main class="auth-content">
+      <router-outlet></router-outlet>
+    </main>
 
-<main class="auth-content">
-    <router-outlet></router-outlet>
-  </main>
-
-<app-footer variant="auth" />
+  <app-footer variant="auth"></app-footer>
+</div>

@@ -1,7 +1,32 @@
-.auth-content {
-  margin-left: 260px;
-  flex: 1;
-  padding: 1.5rem 2rem 120px;
-  background: #f6f8fa;
-  min-height: calc(100vh - 56px - 100px);
+:host {
+  display: block;
+  height: var(--header-h); /* 200px */
+}
+
+.auth-header {
+  height: 100%;
+  position: relative;
+
+  background-image: var(--header-bg-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  overflow: hidden;
+}
+
+.auth-header__inner {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 24px;
+}
+
+.auth-header img {
+  max-height: 80px;
+  width: auto;
 }
