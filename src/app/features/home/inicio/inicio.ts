@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { InicioViewComponent } from '../../components/inicio-view/inicio-view';
+import { TituloComponent } from '../components/titulo/titulo';
 
 @Component({
   standalone: true,
   selector: 'app-inicio-page',
-  imports: [InicioViewComponent],
-  templateUrl: './inicio-page.html'
+  imports: [TituloComponent],
+  templateUrl: './inicio.html'
 })
-export class InicioPage {
+export class Inicio {
 
   mensaje = 'Cargando...';
 

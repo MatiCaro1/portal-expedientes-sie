@@ -3,8 +3,8 @@ import { Routes } from '@angular/router';
 import { AuthLayoutComponent } from './shared/components/layout/auth-layout/auth-layout';
 import { MainLayoutComponent } from './shared/components/layout/main-layout/main-layout';
 
-import { LoginPage } from './features/login/pages/login-page/login-page';
-import { InicioPage } from './features/inicio/pages/inicio-page/inicio-page';
+import { Login } from './features/login/login';
+import { Inicio } from './features/home/inicio/inicio';
 
 export const routes: Routes = [
   {
@@ -20,7 +20,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'login',
-        component: LoginPage
+        component: Login
       }
     ]
   },
@@ -32,7 +32,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'inicio',
-        component: InicioPage
+        component: Inicio
       }
     ]
   }

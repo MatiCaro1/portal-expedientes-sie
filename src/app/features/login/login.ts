@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-login-page',
+  selector: 'app-login',
   standalone: true,
-  templateUrl: './login-page.html',
-  styleUrls: ['./login-page.css']
+  templateUrl: './login.html',
+  styleUrls: ['./login.css']
 })
-export class LoginPage {
+export class Login {
 
   constructor(private router: Router) {}
 
