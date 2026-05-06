@@ -10,13 +10,20 @@
   --footer-link-color: rgba(255, 255, 255, 0.85);
   --footer-link-hover: #ffffff;
   --footer-font: Roboto, 'Helvetica Neue', sans-serif;
+
+  /* Header Variables */
+  --header-bg-image: url('/assets/images/sie_header.png');
+  --header-bg-color: #0d1b3e;
+  --header-text-light: #ffffff;
+  --header-height: 100px;
+  --header-font: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 .sidebar {
   position: fixed;
   top: var(--topbar-h);
   left: 0;
-  bottom: var(--footer-h + 20 px);
+  bottom: calc(var(--footer-h) + 20px);
   width: var(--sidebar-w);
   background: #ffffff;
   border-right: 1px solid #e0e0e0;
