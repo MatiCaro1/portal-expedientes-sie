@@ -1,6 +1,6 @@
 :root {
   --sidebar-w: 260px;
-  --topbar-h: 56px;
+  --topbar-h: 200px;
   --footer-h: 100px;
 
   --footer-bg-image: url('/assets/images/footer.png');
@@ -21,7 +21,7 @@
 
 .sidebar {
   position: fixed;
-  top: var(--header-height);
+  top: var(--topbar-h);
   left: 0;
   bottom: calc(var(--footer-h) + 20px);
   width: var(--sidebar-w);
@@ -46,9 +46,17 @@
   width: auto;
   object-fit: contain;
 }
-
-.header_auth{
-  height: 100px;
-  width: auto;
-  object-fit: contain;
+.main-content {
+  margin-left: 260px;
+  flex: 1;
+  padding: 1.5rem 2rem 120px;
+  background: #f6f8fa;
+  min-height: calc(100vh - 56px - 100px);
+}
+.auth-content {
+  margin-left: 260px;
+  flex: 1;
+  padding: 1.5rem 2rem 120px;
+  background: #f6f8fa;
+  min-height: calc(100vh - 56px - 100px);
 }

@@ -1,5 +1,7 @@
 :host {
-  display: block;
+  --sidebar-w: 260px;
+  --topbar-h: 200px;
+  --footer-h: 100px;
 }
 
 .layout-body {
@@ -12,7 +14,7 @@
   /* Deja espacio para el sidebar fijo */
   margin-left: var(--sidebar-w);
   flex: 1;
-  padding: 1.5rem 2rem calc(var(--footer-h) + 20px);
+  padding: 1.5rem 2rem 120px;
   background: #f6f8fa;
-  min-height: calc(100vh - var(--header-height));
+  min-height: calc(100vh - var(--topbar-h) - var(--footer-h));
 }

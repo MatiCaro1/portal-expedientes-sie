@@ -1,0 +1,7 @@
+.auth-content {
+  margin-left: 260px;
+  flex: 1;
+  padding: 1.5rem 2rem 120px;
+  background: #f6f8fa;
+  min-height: calc(100vh - 56px - 100px);
+}

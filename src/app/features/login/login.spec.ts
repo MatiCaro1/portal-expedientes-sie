@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InicioViewComponent } from './inicio-view';
+import { LoginPage } from './login';
 
-describe('InicioViewComponent', () => {
-  let component: InicioViewComponent;
-  let fixture: ComponentFixture<InicioViewComponent>;
+describe('LoginPage', () => {
+  let component: LoginPage;
+  let fixture: ComponentFixture<LoginPage>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InicioViewComponent],
+      imports: [LoginPage],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(InicioViewComponent);
+    fixture = TestBed.createComponent(LoginPage);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
