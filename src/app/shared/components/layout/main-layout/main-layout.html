@@ -1,13 +1,15 @@
-<app-main-header></app-main-header>
+<div class="main-layout">
+  <app-main-header></app-main-header>
 
-<div class="layout-container">
-  <div class="layout-body">
-    <app-sidebar></app-sidebar>
+    <div class="layout-container">
+      <div class="layout-body">
+        <app-sidebar></app-sidebar>
 
-    <main class="main-content">
-      <router-outlet></router-outlet>
-    </main>
-  </div>
+        <main class="main-content">
+          <router-outlet></router-outlet>
+        </main>
+      </div>
+    </div>
+
+  <app-footer variant="main"></app-footer>
 </div>
-
-<app-footer variant="main" />

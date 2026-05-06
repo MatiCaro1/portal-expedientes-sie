@@ -1,5 +1,6 @@
 .main-header {
   width: 100%;
+  height: var(--header-h);
   font-family: var(--header-font);
   background-image: var(--footer-bg-image);
   background-color: var(--footer-bg-color);
@@ -9,7 +10,6 @@
   color: var(--header-text-light);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   position: relative;
-  z-index: 200;
 }
 
 .main-header__inner {
@@ -19,7 +19,7 @@
   padding: 0 32px;
   max-width: 1280px;
   margin: 0 auto;
-  height: var(--header-height);
+  height: 100%;
 }
 
 .main-header__logo-container {
