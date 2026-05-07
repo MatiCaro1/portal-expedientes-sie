@@ -7,6 +7,7 @@ import { Login } from './features/login/login';
 import { Inicio } from './features/home/inicio/inicio';
 
 export const routes: Routes = [
+
   {
     path: '',
     redirectTo: 'auth/login',
@@ -20,20 +21,27 @@ export const routes: Routes = [
     children: [
       {
         path: 'login',
-        component: Login
+        component: Login,
+        data: {
+          breadcrumb: 'Login'
+        }
       }
     ]
   },
 
   // 🏠 APP
   {
-    path: 'app',
-    component: MainLayoutComponent,
-    children: [
-      {
-        path: 'inicio',
-        component: Inicio
+  path: 'app',
+  component: MainLayoutComponent,
+  children: [
+    {
+      path: 'inicio',
+      component: Inicio,
+      data: {
+        breadcrumb: '🏠 Inicio'
       }
-    ]
-  }
+    }
+  ]
+}
+
 ];
