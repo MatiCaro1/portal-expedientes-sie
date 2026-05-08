@@ -23,7 +23,7 @@ export class SidebarComponent {
   };
 
   navItems: NavItem[] = [
-    { label: 'Home', route: '/app/inicio', icon: 'home' }, //Preseleccionado
+    { label: 'Inicio', route: '/app/inicio', icon: 'home' }, //Preseleccionado
     { label: 'Mis Expedientes', route: '/expedientes', icon: 'inbox', badge: '3', subtitle: '3 expedientes activos' },
     { label: 'Configuración', route: '/configuracion', icon: 'settings' },
     //{ label: 'Ayuda', route: '/ayuda', icon: 'help' },
