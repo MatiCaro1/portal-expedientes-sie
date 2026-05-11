@@ -15,11 +15,20 @@
       <div class="filter-grid">
         <div class="filter-field">
           <label class="form-label">Título</label>
-          <input class="form-input" [(ngModel)]="filtros.titulo" placeholder="Ej: Autorización Canon" />
+          <input
+            class="form-input"
+            [ngModel]="filtros().titulo"
+            (ngModelChange)="updateFiltro('titulo', $event)"
+            placeholder="Ej: Autorización Canon"
+          />
         </div>
         <div class="filter-field">
           <label class="form-label">Estado</label>
-          <select class="form-select" [(ngModel)]="filtros.estado">
+          <select
+            class="form-select"
+            [ngModel]="filtros().estado"
+            (ngModelChange)="updateFiltro('estado', $event)"
+          >
             <option value="">Seleccione…</option>
             <option value="tramite">En Trámite</option>
             <option value="resuelto">Resuelto</option>
@@ -28,11 +37,20 @@
         </div>
         <div class="filter-field">
           <label class="form-label">Fecha Ingreso</label>
-          <input class="form-input" [(ngModel)]="filtros.fechaIngreso" type="date" />
+          <input
+            class="form-input"
+            type="date"
+            [ngModel]="filtros().fechaIngreso"
+            (ngModelChange)="updateFiltro('fechaIngreso', $event)"
+          />
         </div>
         <div class="filter-field">
           <label class="form-label">Tipo Procedimiento</label>
-          <select class="form-select" [(ngModel)]="filtros.tipoProcedimiento">
+          <select
+            class="form-select"
+            [ngModel]="filtros().tipoProcedimiento"
+            (ngModelChange)="updateFiltro('tipoProcedimiento', $event)"
+          >
             <option value="">Seleccione…</option>
             <option>DPDE</option>
             <option>FISCALIZACIÓN</option>
@@ -42,7 +60,11 @@
         </div>
         <div class="filter-field">
           <label class="form-label">Tipo Trámite</label>
-          <select class="form-select" [(ngModel)]="filtros.tipoTramite">
+          <select
+            class="form-select"
+            [ngModel]="filtros().tipoTramite"
+            (ngModelChange)="updateFiltro('tipoTramite', $event)"
+          >
             <option value="">Seleccione…</option>
             <option>Solicitud</option>
             <option>Notificación</option>
@@ -51,7 +73,12 @@
         </div>
         <div class="filter-field">
           <label class="form-label">Últ. Actuación</label>
-          <input class="form-input" [(ngModel)]="filtros.ultActuacion" type="date" />
+          <input
+            class="form-input"
+            type="date"
+            [ngModel]="filtros().ultActuacion"
+            (ngModelChange)="updateFiltro('ultActuacion', $event)"
+          />
         </div>
       </div>
       <div class="filter-panel__actions">
@@ -94,7 +121,11 @@
             <td><span class="exp-tipo">{{ exp.tipoTramite }}</span></td>
             <td><span class="exp-date">{{ exp.fechaIngreso }}</span></td>
             <td><span class="exp-date">{{ exp.ultActuacion }}</span></td>
-            <td><span class="status-badge" [ngClass]="estadoClass(exp.estado)">{{ estadoLabel(exp.estado) }}</span></td>
+            <td>
+              <span class="status-badge" [ngClass]="estadoClass(exp.estado)">
+                {{ estadoLabel(exp.estado) }}
+              </span>
+            </td>
             <td>
               <button class="ver-detalle-link" (click)="$event.stopPropagation(); verDetalle(exp)">
                 Ver Detalle
@@ -110,7 +141,9 @@
       <div class="empty-state">
         <div class="empty-state__icon">📂</div>
         <div class="empty-state__msg">No se han encontrado expedientes asociados a su usuario</div>
-        <div class="empty-state__sub">Cuando inicie un trámite o sea vinculado a un expediente, aparecerá listado en esta vista.</div>
+        <div class="empty-state__sub">
+          Cuando inicie un trámite o sea vinculado a un expediente, aparecerá listado en esta vista.
+        </div>
       </div>
     }
   </div>
@@ -119,7 +152,9 @@
   @if (expedientesFiltrados().length > 0) {
     <div class="pagination">
       <span class="text-muted">
-        Mostrando {{ (paginaActual() - 1) * itemsPorPagina + 1 }}–{{ finPagina() }} de {{ expedientesFiltrados().length }} expediente{{ expedientesFiltrados().length !== 1 ? 's' : '' }}
+        Mostrando {{ (paginaActual() - 1) * itemsPorPagina + 1 }}–{{ finPagina() }}
+        de {{ expedientesFiltrados().length }}
+        expediente{{ expedientesFiltrados().length !== 1 ? 's' : '' }}
       </span>
       <div class="pag-btns">
         <button class="pag-btn" (click)="irPagina(paginaActual() - 1)" [disabled]="paginaActual() === 1">‹</button>

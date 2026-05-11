@@ -120,6 +120,7 @@
 .form-input:focus { border-color: var(--c-primary-vivid); box-shadow: var(--shadow-glow); }
 
 .form-select {
+  box-sizing: border-box;
   padding: 7px 10px;
   border: 1.5px solid var(--c-border);
   border-radius: var(--radius-sm);

@@ -9,6 +9,7 @@ export type TabActivo = 'activos' | 'cerrados';
 export interface Expediente {
   id: string;
   titulo: string;
+  tipoProcedimiento: string;
   tipoTramite: string;
   fechaIngreso: string;
   ultActuacion: string;
@@ -24,11 +25,21 @@ interface Filtros {
   ultActuacion: string;
 }
 
+const FILTROS_VACIOS: Filtros = {
+  titulo: '',
+  estado: '',
+  fechaIngreso: '',
+  tipoProcedimiento: '',
+  tipoTramite: '',
+  ultActuacion: '',
+};
+
 const MOCK_ACTIVOS: Expediente[] = [
   {
     id: 'SIE-PACA-2026-001',
     titulo: 'Autorización Canon de Arriendo',
-    tipoTramite: 'ACTO_ADMINISTRATIVO',
+    tipoProcedimiento: 'FISCALÍA',
+    tipoTramite: 'Solicitud',
     fechaIngreso: '01-04-2026',
     ultActuacion: '01-04-2026',
     estado: 'tramite',
@@ -36,7 +47,8 @@ const MOCK_ACTIVOS: Expediente[] = [
   {
     id: 'SIE-PACA-2026-002',
     titulo: 'Tramitación de Legalidad de Uso de Recursos',
-    tipoTramite: 'ACTO_ADMINISTRATIVO',
+    tipoProcedimiento: 'FISCALÍA',
+    tipoTramite: 'Resolución',
     fechaIngreso: '01-04-2026',
     ultActuacion: '01-04-2026',
     estado: 'resuelto',
@@ -44,7 +56,8 @@ const MOCK_ACTIVOS: Expediente[] = [
   {
     id: 'SIE-PACA-2026-003',
     titulo: 'Solicitud de Dictamen Normativo Fiscalía',
-    tipoTramite: 'ACTO_ADMINISTRATIVO',
+    tipoProcedimiento: 'DPDE',
+    tipoTramite: 'Solicitud',
     fechaIngreso: '01-04-2026',
     ultActuacion: '01-04-2026',
     estado: 'resuelto',
@@ -55,7 +68,8 @@ const MOCK_CERRADOS: Expediente[] = [
   {
     id: 'SIE-PACA-2025-123',
     titulo: 'Autorización Canon de Arriendo',
-    tipoTramite: 'ACTO_ADMINISTRATIVO',
+    tipoProcedimiento: 'FISCALIZACIÓN',
+    tipoTramite: 'Notificación',
     fechaIngreso: '10-11-2025',
     ultActuacion: '22-12-2025',
     estado: 'cerrado',
@@ -73,14 +87,7 @@ export class MisExpedientes {
 
   filtroVisible = signal(true);
 
-  filtros: Filtros = {
-    titulo: '',
-    estado: '',
-    fechaIngreso: '',
-    tipoProcedimiento: '',
-    tipoTramite: '',
-    ultActuacion: '',
-  };
+  filtros = signal<Filtros>({ ...FILTROS_VACIOS });
 
   tabActivo = signal<TabActivo>('activos');
 
@@ -92,10 +99,15 @@ export class MisExpedientes {
 
   expedientesFiltrados = computed(() => {
     const lista = this.tabActivo() === 'activos' ? this.todosActivos() : this.todosCerrados();
+    const f = this.filtros();
     return lista.filter((e) => {
-      const matchTitulo = !this.filtros.titulo || e.titulo.toLowerCase().includes(this.filtros.titulo.toLowerCase());
-      const matchEstado = !this.filtros.estado || e.estado === this.filtros.estado;
-      return matchTitulo && matchEstado;
+      const matchTitulo = !f.titulo || e.titulo.toLowerCase().includes(f.titulo.toLowerCase());
+      const matchEstado = !f.estado || e.estado === f.estado;
+      const matchProcedimiento = !f.tipoProcedimiento || e.tipoProcedimiento === f.tipoProcedimiento;
+      const matchTipoTramite = !f.tipoTramite || e.tipoTramite === f.tipoTramite;
+      const matchFechaIngreso = !f.fechaIngreso || e.fechaIngreso === this.formatoFiltroFecha(f.fechaIngreso);
+      const matchUltActuacion = !f.ultActuacion || e.ultActuacion === this.formatoFiltroFecha(f.ultActuacion);
+      return matchTitulo && matchEstado && matchProcedimiento && matchTipoTramite && matchFechaIngreso && matchUltActuacion;
     });
   });
 
@@ -110,12 +122,17 @@ export class MisExpedientes {
 
   finPagina = computed(() => Math.min(this.paginaActual() * this.itemsPorPagina, this.expedientesFiltrados().length));
 
+  updateFiltro<K extends keyof Filtros>(key: K, value: Filtros[K]): void {
+    this.filtros.update((f) => ({ ...f, [key]: value }));
+    this.paginaActual.set(1);
+  }
+
   toggleFiltro(): void {
     this.filtroVisible.set(!this.filtroVisible());
   }
 
   limpiarFiltros(): void {
-    this.filtros = { titulo: '', estado: '', fechaIngreso: '', tipoProcedimiento: '', tipoTramite: '', ultActuacion: '' };
+    this.filtros.set({ ...FILTROS_VACIOS });
     this.paginaActual.set(1);
   }
 
@@ -150,5 +167,12 @@ export class MisExpedientes {
       cerrado: 's--cerrado',
     };
     return classes[estado];
+  }
+
+  // Convierte 'YYYY-MM-DD' (input type=date) a 'DD-MM-YYYY' (formato de los datos)
+  private formatoFiltroFecha(fechaInput: string): string {
+    if (!fechaInput) return '';
+    const [y, m, d] = fechaInput.split('-');
+    return `${d}-${m}-${y}`;
   }
 }
