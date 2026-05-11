@@ -1,0 +1,29 @@
+.expediente-tabs {
+  display: flex;
+  gap: 2rem;
+
+  border-bottom: 1px solid #dcdcdc;
+
+  padding: 0 1rem;
+}
+
+.expediente-tabs a {
+  padding: 1rem 0;
+
+  text-decoration: none;
+  color: #555;
+
+  border-bottom: 3px solid transparent;
+
+  transition: 0.2s;
+}
+
+.expediente-tabs a:hover {
+  color: #003b7a;
+}
+
+.expediente-tabs a.active {
+  color: #003b7a;
+  border-bottom-color: #003b7a;
+  font-weight: 600;
+}
