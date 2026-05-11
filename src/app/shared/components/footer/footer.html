@@ -1,0 +1,46 @@
+<footer class="footer" [class.footer--main]="isMain" [class.footer--auth]="isAuth">
+  <div class="footer__inner">
+
+    @if (isAuth) {
+      <div class="footer__left">
+        <span class="footer__info-text">
+          Para mayor información ingresa a
+          <a [href]="siteUrl" class="footer__link" target="_blank" rel="noopener">
+            {{ siteName }}
+          </a>
+        </span>
+      </div>
+
+      <div class="footer__right">
+        <span class="footer__version-label">v{{ systemVersion }}</span>
+      </div>
+    }
+    @if (isMain) {
+      <div class="footer__left">
+        <img
+          src="/assets/images/logo_SIE_blanco.png"
+          alt="Logo SIE"
+          class="footer__logo"
+        />
+        <span class="footer__system-name">{{ systemName }}</span>
+      </div>
+
+      <nav class="footer__links" aria-label="Enlaces institucionales">
+        @for (link of mainLinks; track link.href) {
+          <a [href]="link.href" class="footer__link" target="_blank" rel="noopener">
+            {{ link.label }}
+          </a>
+          @if (!$last) {
+            <span class="footer__separator" aria-hidden="true">·</span>
+          }
+        }
+      </nav>
+
+      <div class="footer__right">
+        <span class="footer__copy">&copy; {{ currentYear }} {{ orgName }}</span>
+        <span class="footer__version-label">v{{ systemVersion }}</span>
+      </div>
+    }
+
+  </div>
+</footer>

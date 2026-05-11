@@ -1,11 +1,9 @@
-<header>
-  <h2>Gobierno de Chile</h2>
-</header>
+<div class="auth-layout">
+  <app-auth-header></app-auth-header>
 
-<main>
-  <router-outlet></router-outlet>
-</main>
+  <main class="auth-content">
+      <router-outlet></router-outlet>
+    </main>
 
-<footer>
-  Plataforma pública
-</footer>
+  <app-footer variant="auth"></app-footer>
+</div>

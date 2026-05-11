@@ -1,0 +1,37 @@
+:host {
+  display: block;
+  margin-bottom: 1rem;
+}
+.breadcrumbs {
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 1.5rem;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  font-size: 0.9rem;
+}
+
+.breadcrumbs__link {
+  color: #6b7280;
+  text-decoration: none;
+}
+
+.breadcrumbs__link:hover {
+  color: #0d1b3e;
+}
+
+.breadcrumbs__current {
+  color: #0d1b3e;
+  font-weight: 600;
+}
+
+.breadcrumbs__separator {
+  margin: 0 0.5rem;
+  color: #9ca3af;
+}

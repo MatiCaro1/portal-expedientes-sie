@@ -1,1 +1,144 @@
-/* You can add global styles to this file, and also import other style files */
+/* =========================
+   VARIABLES GLOBALES
+========================= */
+:root {
+  --sidebar-w: 260px;
+  --header-h: 100px;
+  --footer-h: 100px;
+
+  /* Header */
+  --header-bg-image: url('/assets/images/sie_header.png');
+  --header-bg-color: #0d1b3e;
+  --header-text-light: #ffffff;
+
+  /* Footer */
+  --footer-bg-image: url('/assets/images/footer.png');
+  --footer-bg-color: #0d1b3e;
+  --footer-text-light: #ffffff;
+}
+
+/* =========================
+   RESET BASE
+========================= */
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+/* =========================
+   LAYOUT GENERAL
+========================= */
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.layout-container {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.layout-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* =========================
+   LAYOUT AUTH
+========================= */
+.auth-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  --header-h: 200px;
+  --footer-h: 100px;
+}
+
+/* =========================
+   HEADER
+========================= */
+app-main-header,
+app-auth-header {
+  height: var(--header-h);
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Header interno (auth) */
+.auth-header {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.auth-header__inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* =========================
+   FOOTER
+========================= */
+app-footer {
+  height: var(--footer-h);
+  flex-shrink: 0;
+  display: block;
+}
+
+.footer__logo {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+app-sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  background: #fff;
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================
+   CONTENIDO PRINCIPAL
+========================= */
+.main-content {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  padding: 1.5rem 2rem;
+  background: #f6f8fa;
+}
+
+/* =========================
+   CONTENIDO AUTH
+========================= */
+.auth-content {
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 2rem;
+
+  background: #f6f8fa;
+}
+
+/* =========================
+   UTILIDADES
+========================= */
+.header_auth {
+  height: var(--header-h);
+}
