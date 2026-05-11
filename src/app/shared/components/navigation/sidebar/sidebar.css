@@ -2,7 +2,7 @@
   --sidebar-w: 260px;
   --topbar-h: 56px;
   --footer-h: 80px;
-  --profile-blue: rgb(15, 105, 196);
+  --profile-blue: rgb(35, 77, 119);
   display: block;
 }
 
@@ -119,7 +119,7 @@
 }
 
 .nav-item.active .nav-item__subtitle {
-  color: #5c87a8;
+  color: #5c70a8;
 }
 
 /* ───── Badge ───── */

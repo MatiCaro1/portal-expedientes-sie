@@ -1,0 +1,32 @@
+<nav class="breadcrumbs">
+
+  <ng-container *ngFor="let item of breadcrumbs; let last = last">
+
+    <!-- Navegables -->
+    <a
+      *ngIf="!last"
+      [routerLink]="item.route"
+      class="breadcrumbs__link"
+    >
+      {{ item.label }}
+    </a>
+
+    <!-- Actual -->
+    <span
+      *ngIf="last"
+      class="breadcrumbs__current"
+    >
+      {{ item.label }}
+    </span>
+
+    <!-- Separador -->
+    <span
+      *ngIf="!last"
+      class="breadcrumbs__separator"
+    >
+      /
+    </span>
+
+  </ng-container>
+
+</nav>
