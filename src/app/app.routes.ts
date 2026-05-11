@@ -6,22 +6,21 @@ import { MainLayoutComponent } from './shared/components/layout/main-layout/main
 import { Login } from './features/login/login';
 
 import { Inicio } from './features/home/inicio/inicio';
-import { Expedientes } from './features/expedientes/expedientes';
-/*
+
+import { MisExpedientes } from './features/expedientes/mis-expedientes/mis-expedientes';
+
 import { VerExpediente } from './features/expedientes/ver-expediente/ver-expediente';
-
-import { Actuaciones } from './features/expedientes/ver-expediente/actuaciones/actuaciones';
-import { Documentos } from './features/expedientes/ver-expediente/documentos/documentos';
-import { Relaciones } from './features/expedientes/ver-expediente/relaciones/relaciones';
-import { Poderes } from './features/expedientes/ver-expediente/poderes/poderes';
-
-import { VerDocumento } from './features/expedientes/ver-expediente/documentos/ver-documento/ver-documento';
+/*
+import { Actuaciones } from './features/expedientes/actuaciones/actuaciones';
+import { Documentos } from './features/expedientes/documentos/documentos';
+import { Relaciones } from './features/expedientes/relaciones/relaciones';
+import { Poderes } from './features/expedientes/poderes/poderes';
 */
 export const routes: Routes = [
 
-  // =========================================================
+  // =====================================================
   // REDIRECT
-  // =========================================================
+  // =====================================================
 
   {
     path: '',
@@ -29,9 +28,9 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
 
-  // =========================================================
+  // =====================================================
   // AUTH
-  // =========================================================
+  // =====================================================
 
   {
     path: 'auth',
@@ -40,27 +39,25 @@ export const routes: Routes = [
 
       {
         path: 'login',
-        component: Login,
-        data: {
-          breadcrumb: 'Login'
-        }
+        component: Login
       }
 
     ]
   },
 
-  // =========================================================
+  // =====================================================
   // APP
-  // =========================================================
+  // =====================================================
 
   {
     path: 'app',
     component: MainLayoutComponent,
+
     children: [
 
-      // -----------------------------------------------------
-      // HOME
-      // -----------------------------------------------------
+      // -------------------------------------------------
+      // INICIO
+      // -------------------------------------------------
 
       {
         path: 'inicio',
@@ -70,39 +67,38 @@ export const routes: Routes = [
         }
       },
 
-      // -----------------------------------------------------
-      // EXPEDIENTES
-      // -----------------------------------------------------
+      // -------------------------------------------------
+      // MIS EXPEDIENTES
+      // -------------------------------------------------
 
       {
         path: 'expedientes',
-        component: Expedientes,
+        component: MisExpedientes,
         data: {
           breadcrumb: 'Mis Expedientes'
         }
       },
 
-      // -----------------------------------------------------
+      // -------------------------------------------------
       // VER EXPEDIENTE
-      // -----------------------------------------------------
-/*
+      // -------------------------------------------------
+
       {
         path: 'verExpediente',
         component: VerExpediente,
+
         data: {
           breadcrumb: 'Expediente'
-        },
+        }/*,
 
         children: [
 
-          // INDEX TAB
           {
             path: '',
             redirectTo: 'actuaciones',
             pathMatch: 'full'
           },
 
-          // ACTUACIONES
           {
             path: 'actuaciones',
             component: Actuaciones,
@@ -111,7 +107,6 @@ export const routes: Routes = [
             }
           },
 
-          // DOCUMENTOS
           {
             path: 'documentos',
             component: Documentos,
@@ -120,16 +115,6 @@ export const routes: Routes = [
             }
           },
 
-          // VER DOCUMENTO
-          {
-            path: 'documentos/verDocumento',
-            component: VerDocumento,
-            data: {
-              breadcrumb: 'Ver Documento'
-            }
-          },
-
-          // RELACIONES
           {
             path: 'relaciones',
             component: Relaciones,
@@ -138,7 +123,6 @@ export const routes: Routes = [
             }
           },
 
-          // PODERES
           {
             path: 'poderes',
             component: Poderes,
@@ -147,19 +131,9 @@ export const routes: Routes = [
             }
           }
 
-        ]
+        ]*/
       }
-*/
     ]
-  },
-
-  // =========================================================
-  // FALLBACK
-  // =========================================================
-
-  {
-    path: '**',
-    redirectTo: 'auth/login'
   }
 
 ];
