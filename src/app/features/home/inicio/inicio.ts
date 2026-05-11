@@ -1,17 +1,16 @@
 import { Component } from '@angular/core';
-import { TituloComponent } from '../components/titulo/titulo';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
-  selector: 'app-inicio-page',
-  imports: [TituloComponent],
+  selector: 'app-inicio',
   templateUrl: './inicio.html'
 })
 export class Inicio {
+  constructor(private router: Router) {}
 
-  mensaje = 'Cargando...';
-
-  ngOnInit() {
-    this.mensaje = 'Bienvenido al Portal de Expedientes';
+  irExpedientes() {
+    this.router.navigate(['/app/expedientes']);
   }
+
 }
