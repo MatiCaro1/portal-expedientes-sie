@@ -1,20 +1,10 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgClass } from '@angular/common';
+import { Expediente, EstadoExpediente, ExpedienteService } from '../../../core/services/expediente.service';
 
-export type EstadoExpediente = 'tramite' | 'resuelto' | 'cerrado';
 export type TabActivo = 'activos' | 'cerrados';
-
-export interface Expediente {
-  id: string;
-  titulo: string;
-  tipoProcedimiento: string;
-  tipoTramite: string;
-  fechaIngreso: string;
-  ultActuacion: string;
-  estado: EstadoExpediente;
-}
 
 interface Filtros {
   titulo: string;
@@ -34,68 +24,38 @@ const FILTROS_VACIOS: Filtros = {
   ultActuacion: '',
 };
 
-const MOCK_ACTIVOS: Expediente[] = [
-  {
-    id: 'SIE-PACA-2026-001',
-    titulo: 'Autorización Canon de Arriendo',
-    tipoProcedimiento: 'FISCALÍA',
-    tipoTramite: 'Solicitud',
-    fechaIngreso: '01-04-2026',
-    ultActuacion: '01-04-2026',
-    estado: 'tramite',
-  },
-  {
-    id: 'SIE-PACA-2026-002',
-    titulo: 'Tramitación de Legalidad de Uso de Recursos',
-    tipoProcedimiento: 'FISCALÍA',
-    tipoTramite: 'Resolución',
-    fechaIngreso: '01-04-2026',
-    ultActuacion: '01-04-2026',
-    estado: 'resuelto',
-  },
-  {
-    id: 'SIE-PACA-2026-003',
-    titulo: 'Solicitud de Dictamen Normativo Fiscalía',
-    tipoProcedimiento: 'DPDE',
-    tipoTramite: 'Solicitud',
-    fechaIngreso: '01-04-2026',
-    ultActuacion: '01-04-2026',
-    estado: 'resuelto',
-  },
-];
-
-const MOCK_CERRADOS: Expediente[] = [
-  {
-    id: 'SIE-PACA-2025-123',
-    titulo: 'Autorización Canon de Arriendo',
-    tipoProcedimiento: 'FISCALIZACIÓN',
-    tipoTramite: 'Notificación',
-    fechaIngreso: '10-11-2025',
-    ultActuacion: '22-12-2025',
-    estado: 'cerrado',
-  },
-];
-
 @Component({
   selector: 'app-mis-expedientes',
   imports: [FormsModule, NgClass],
   templateUrl: './mis-expedientes.html',
   styleUrl: './mis-expedientes.css',
 })
-export class MisExpedientes {
-  constructor(private router: Router) {}
+export class MisExpedientes implements OnInit {
+  private expedienteService = inject(ExpedienteService);
+  private router = inject(Router);
 
   filtroVisible = signal(true);
-
   filtros = signal<Filtros>({ ...FILTROS_VACIOS });
-
   tabActivo = signal<TabActivo>('activos');
-
   paginaActual = signal(1);
   readonly itemsPorPagina = 10;
 
-  private readonly todosActivos = signal(MOCK_ACTIVOS);
-  private readonly todosCerrados = signal(MOCK_CERRADOS);
+  private readonly todosActivos = signal<Expediente[]>([]);
+  private readonly todosCerrados = signal<Expediente[]>([]);
+
+  ngOnInit(): void {
+    this.cargarExpedientes();
+  }
+
+  cargarExpedientes(): void {
+    // En un escenario real, cargarías ambos o solo el activo
+    this.expedienteService.getExpedientes('activos').subscribe(data => {
+      this.todosActivos.set(data);
+    });
+    this.expedienteService.getExpedientes('cerrados').subscribe(data => {
+      this.todosCerrados.set(data);
+    });
+  }
 
   expedientesFiltrados = computed(() => {
     const lista = this.tabActivo() === 'activos' ? this.todosActivos() : this.todosCerrados();

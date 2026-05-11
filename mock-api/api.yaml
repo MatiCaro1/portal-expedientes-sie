@@ -1,0 +1,958 @@
+openapi: 3.0.3
+info:
+  title: API Expedientes
+  description: |-
+    API que permite gestionar Expedientes Electrónicos basados en Transformación Digital
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Wiki Supereduc
+  url: http://wiki.supereduc.cl
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: Expedientes
+    description: Expediente
+  - name: Actuaciones
+    description: Actuaciones relacionadas con los expedientes
+  - name: Poderes
+    description: Poderes asociados a los expedientes
+
+
+
+paths:
+  /expedientes:
+    get:
+      tags:
+        - Expedientes
+      summary: Devuelve una lista de expedientes
+      description: Busca expedientes según criterios
+      operationId: buscarExpedientes
+      parameters:
+        - name: rut
+          in: query
+          description: Rut del actor relacionado utilizado como filtro de búsqueda
+          required: false
+          schema:
+            type: string
+
+        - name: page
+          in: query
+          description: >
+            Número de página a consultar (comienza en 0).
+            Ejemplo: page=0 corresponde a la primera página.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            default: 0
+
+        - name: size
+          in: query
+          description: >
+            Cantidad de registros por página.
+            Valores típicos: 10, 20, 50.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            default: 20
+
+        - name: sort
+          in: query
+          description: >
+            Criterio de ordenamiento.
+            Se puede especificar múltiples veces.
+            Formato: campo,direccion
+
+            Ejemplos:
+            - sort=fechaCreacion,desc
+            - sort=estado,asc
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              example: fechaCreacion,desc
+          style: form
+          explode: true
+
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpedientePageResponse'
+        '400':
+          description: Parámetros inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: No autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+      #security:
+       # - bearerAuth: [ ]
+
+    post:
+      tags:
+        - Expedientes
+      summary: Crea un expediente
+      description: Crea un expediente en el sistema
+      operationId: crearExpediente
+      requestBody:
+        description: Datos del expediente a crear
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CrearExpedienteRequest'
+        required: true
+      responses:
+        '201':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpedienteResponse'
+        '400':
+          description: petición con errores de entrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      #security:
+       # - bearerAuth: [ ]
+
+  /expedientes/{id}:
+    get:
+      tags:
+        - Expedientes
+      summary: Obtiene un expediente
+      description: Obtiene un expediente
+      operationId: obtenerExpediente
+      parameters:
+        - name: id
+          in: path
+          description: ID del expediente
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpedienteResponse'
+        '404':
+          description: Expediente no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      #security:
+       # - bearerAuth: [ ]
+
+  /expedientes/{id}/iniciar:
+    post:
+      tags:
+        - Expedientes
+      summary: Iniciar expediente
+      description: Cambia el estado del expediente a EN_TRAMITE.
+      operationId: iniciarExpediente
+      parameters:
+        - name: id
+          in: path
+          description: ID del expediente
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expediente iniciado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpedienteResponse'
+        '400':
+          description: petición con errores de entrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Expediente no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: El expediente no puede ser iniciado en su estado actual
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      #security:
+       # - bearerAuth: [ ]
+
+  /expedientes/{id}/actuaciones:
+    post:
+      tags:
+        - Actuaciones
+      summary: Agregar actuaciones a un expediente
+      description: Agrega una nueva actuación a un expediente existente.
+      operationId: agregarActuacion
+      parameters:
+        - name: id
+          in: path
+          description: ID del expediente
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Datos de la actuación a crear
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActuacionRequest'
+        required: true
+      responses:
+        '201':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActuacionResponse'
+        '400':
+          description: petición con errores de entrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Expediente no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      #security:
+       # - bearerAuth: [ ]
+
+  /expedientes/{id}/poderes:
+    post:
+      tags:
+        - Poderes
+      summary: Agregar poderes a un expediente
+      description: Agrega un nuevo poder a un expediente existente.
+      operationId: agregarPoder
+      parameters:
+        - name: id
+          in: path
+          description: ID del expediente
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Datos del poder a crear
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PoderRequest'
+        required: true
+      responses:
+        '201':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoderResponse'
+        '400':
+          description: petición con errores de entrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Expediente no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      #security:
+       # - bearerAuth: [ ]
+
+components:
+  schemas:
+    ExpedienteResponse:
+      type: object
+      properties:
+        id_expediente:
+          type: string
+          title: Identificador de expediente
+          description: Código único (ID) institucional que se asigna automáticamente a un expediente registrado en un
+            sistema de gestión documental o repositorio documental.
+          example: EXP-20230925-001
+        numero:
+          type: integer
+          format: int64
+          title: Número de expediente
+          description: Corresponde al número de orden interno dentro de una serie documental.
+          example: 2
+        titulo:
+          type: string
+          title: Título del Expediente
+          description: Palabra, frase o grupo de caracteres que se utiliza para denominar el expediente con el que se
+            está trabajando. Puede ser formal o atribuido.
+          example: Fiscalización Recursos SEP
+        estado:
+          type: string
+          enum:
+            - PENDIENTE
+            - EN_TRAMITE
+            - FINALIZADO
+          title: Estado
+          description: Identifica el estado del proceso del expediente por parte del OAE productor, asociado a las fases
+            del ciclo de vida de un expediente electrónico o de su gestión institucional.
+          example: EN_TRAMITE
+        fecha_creacion:
+          type: string
+          title: Fecha de creación
+          description: Fecha en la que es generado el expediente (aaaa-mm-dd hh:mm:ss (ISO 8601))
+          format: date-time
+          example: 2026-04-23T14:47:20.4439494-04:00
+        fecha_finalizacion:
+          type: string
+          title: Fecha de finalización
+          description: Fecha de finalización o cierre del expediente (aaaa-mm-dd hh:mm:ss (ISO 8601))
+          format: date-time
+          example: 2026-04-23T14:47:20.4439494-04:00
+        mecanismo_incorporacion:
+          type: string
+          enum:
+            - MANUAL
+            - SERVICIO_WEB
+            - MIXTO
+            - REPOSITORIO_CIUDADANO
+            - INTEROPERABILIDAD
+          title: Mecanismos de incorporación del expediente
+          description: Expresa el mecanismo de incorporación de uno o más expedientes electrónicos al sistema de gestión
+            documental institucional, ya sea manual, carga masiva mediante servicios web, mixto u otro.
+          example: SERVICIO_WEB
+        uri:
+          type: string
+          format: uri
+          title: URI de expediente
+          description: Enlace a expediente almacenado en repositorio documental o plataforma estandarizada.
+          example: https://www.portal.supereduc.cl/ver-expediente/XP-FISC-18282876
+        codigo_oae_productor:
+          type: integer
+          format: int32
+          title: Código de OAE productor
+          description: Identificación del OAE que, en el cumplimiento de sus funciones, genera y/o gestiona los
+            expedientes que son parte de su sistema de gestión de documentos y expedientes y formarán parte de su archivo.
+          example: 46
+        nombre_oae_productor:
+          type: string
+          title: Nombre OAE productor
+          description: Nombre institucional, en caso que el OAE productor no esté registrado en el codificador o
+            la OAE decida almacenarlo para uso directo.
+          example: Gobierno Regional de la Región de La Araucanía
+        oae_asociados:
+          type: array
+          title: OAE Asociado
+          description: Identificación de relaciones específicas del expediente con OAE.
+          items:
+            $ref: '#/components/schemas/OAEAsociadoResponse'
+        otros_actores:
+          type: array
+          title: Otros actores
+          description: Identificación de relaciones del documento con otros actores (persona natural o jurídica).
+          items:
+            $ref: '#/components/schemas/ActorRelacionadoResponse'
+        actuaciones:
+          type: array
+          title: Índice Contenido
+          description: Identificación de los actuaciones administrativos del expediente, formalizados por documentos,
+            carpetas o expedientes asociados.
+          items:
+            $ref: '#/components/schemas/ActuacionResponse'
+        poderes:
+          type: array
+          title: Índice Poderes
+          description: Registro de acciones de poderes asociados a interesados
+          items:
+            $ref: '#/components/schemas/PoderResponse'
+
+        nivel_acceso:
+          type: string
+          enum:
+            - PUBLICO
+            - RESTRINGIDO
+            - SECRETO
+            - RESERVADO
+          title: Nivel de acceso
+          description: Indicación relativa al acceso y para consulta del expediente.
+          example: PUBLICO
+        fecha_fin_restriccion:
+          type: string
+          title: Fecha fin restricción
+          description: Es la fecha que determina el desbloqueo del expediente, en caso de existir.
+          format: date-time
+          example: 2026-04-23T14:47:20.4439494-04:00
+        caracter_sensible_privado:
+          type: boolean
+          title: Información de carácter sensible y/o privado
+          description: Identificación de que el expediente contiene información de carácter sensible o privada.
+          example: true
+
+        codigo_cpat:
+          type: string
+          title: Código CPAT asociado
+          description: Código identificador del procedimiento administrativo en el Catálogo de Procedimientos
+            Administrativos y Tramitaciones (CPAT).
+          example: PT-SUP00025-00015
+        nombre_procedimiento:
+          type: string
+          title: Nombre del procedimiento administrativo asociado
+          description: Nombre del procedimiento administrativo asociado, en caso de no encontrarse incorporado al
+            Catálogo de Procedimientos Administrativos y Tramitaciones (CPAT).
+          example: Solicitud de autorización de canon de arriendo
+
+        version_mdgdee:
+          type: integer
+          format: int32
+          title: Versión MDGDEE
+          description: Identificación de la versión de la Guía Técnica de Metadatos utilizada, de acuerdo con las
+            actualizaciones dispuestas por la Secretaría de Gobierno Digital.
+          example: 001
+
+        informacion_adicional:
+          type: object
+          properties:
+            codigo_cpat:
+              type: string
+              title: Código CPAT asociado
+              description: Código identificador del procedimiento administrativo en el Catálogo de Procedimientos
+                Administrativos y Tramitaciones (CPAT).
+              example: PT-SUP00025-00015
+            informacion:
+              type: array
+              title: Información adicional del Procedimiento
+              description: Lista de objetos que contienen información adicional relacionada con el procedimiento administrativo.
+              items:
+                $ref: '#/components/schemas/Dato'
+
+    OAEAsociadoResponse:
+      type: object
+      properties:
+        tipo_relacion:
+          type: string
+          enum:
+            - AUTOR_INSTITUCIONAL
+            - DESTINATARIO
+            - PRODUCTOR_GENERADOR
+            - CUSTODIA
+          title: Tipo de relación OAE
+          description: Relación establecida entre el expediente referenciado y el OAE.
+          example: CUSTODIA
+        codigo_oae:
+          type: integer
+          format: int32
+          title: Código de OAE productor
+          description: Identificación del OAE que, en el cumplimiento de sus funciones custodia, respalda o está
+            involucrado, en la gestión del expediente.
+          example: 46
+        nombre_oae:
+          type: string
+          title: Nombre OAE relacionado
+          description: Nombre institucional, en caso que sea el OAE productor que no esté registrado en el codificador.
+          example: Gobierno Regional de la Región de La Araucanía
+
+    ActorRelacionadoResponse:
+      type: object
+      properties:
+        relacion:
+          type: string
+          enum:
+            - RESPONSABLE
+            - INTERESADO
+            - AUTOR_CREADOR
+            - REFERIDO
+            - DESTINATARIO
+            - MINISTRO_FE
+          title: Tipo de relación con otros actores
+          description: Identificación del tipo de relación existente con el actor (persona natural o jurídica)
+            y el expediente. Es obligatorio para la identificación de interesados.
+          example: INTERESADO
+        tipo:
+          type: string
+          enum:
+            - CIUDADANO
+            - EXTRANJERO
+            - INSTITUCION_PRIVADA
+            - FUNCIONARIO
+          title: Tipo de actor relacionado
+          description: Identificación del actor relacionado (persona jurídica o natural). Es obligatorio para la
+            identificación de interesados.
+          example: CIUDADANO
+        run:
+          type: string
+          title: RUN/RUT Relacionado
+          description: RUN (Número de Cédula de identidad) de la persona o RUT (Rol Único Tributario) de la
+            institución privada a la que está relacionado el presente expediente o Nro Pasaporte en el caso de extranjeros.
+          example: 60100003-2
+        nombre:
+          type: string
+          title: Nombre del actor relacionado
+          description: Nombre de la persona natural o jurídica sobre la que versa el expediente, si es que no se cuenta
+            con la identificación del actor relacionado.
+          example: Julian Santelices Machuca
+
+    ActuacionResponse:
+      type: object
+      properties:
+        tipo:
+          type: string
+          enum:
+            - ACTO_ADMINISTRATIVO
+            - NOTIFICACION
+            - RECEPCION_ENVIO_COMUNICACION_OFICIAL
+            - INTEROPERABILIDAD
+            - RECEPCION_SOLICITUD
+            - SUBCARPETA
+            - REGISTRO_PODER
+          title: Tipo de actuación
+          description: Tipo de actuación realizada.
+          example: ACTO_ADMINISTRATIVO
+        id_documento:
+          type: string
+          title: Identificador de Documento vinculado
+          description: Identificación del documento que conforma el presente expediente.
+          example: ...
+        fecha_incorporacion:
+          type: string
+          title: Fecha de la incorporación del expediente / documento
+          description: Fecha y hora de incorporación del documento o el expediente relacionado.
+            (Fecha y hora en formato aaaa-mm-dd hh:mm:ss (ISO 8601))
+          format: date-time
+          example: 2026-04-23T14:47:20.4439494-04:00
+        id_subcarpeta:
+          type: string
+          title: Identificador Subcarpeta
+          description: Se registra de forma automática al seleccionar un tipo de actuación Subcarpeta
+          example: ...
+        usuario_responsable:
+          type: string
+          title: Usuario responsable de la actuación
+          description: Usuario responsable de la actuación
+          example: matias.caro
+        descripcion:
+          type: string
+          title: Descripción de la actuación
+          description: Descripción de la actuación realizada en el expediente
+          example: Valida documentación asociada a la solicitud
+
+    PoderResponse:
+      type: object
+      properties:
+        tipo_accion:
+          type: string
+          enum:
+            - OTORGA
+            - CADUCA
+            - ANULA
+            - MODIFICA
+          title: Tipo de acción
+          description: Tipo de acción asociada a gestión de poderes; otorga consulta, otorga total, otorga incorporación,
+            caduca o anula.
+          example: 1 (Otorga consulta)
+        fecha_registro:
+          type: string
+          title: Fecha de registro
+          description: Es la fecha en que se incorpora al expediente el registro de la acción del poder.
+            (formato aaaa-mm-dd hh:mm:ss (ISO 8601))
+          format: date-time
+          example: 2026-04-23T14:47:20.4439494-04:00
+        descripcion:
+          type: string
+          title: Descripción del poder
+          description: Texto descriptivo del poder registrado.
+          example: Otorga poder de consulta a don Juan juanes para el contenido del expediente del procedimiento.
+        rut_interesado:
+          type: string
+          title: RUT interesado
+          description: RUN del interesado del procedimiento administrativo que otorga el poder.
+          example: 9999999-9
+        run_funcionario:
+          type: string
+          title: RUN Funcionario responsable
+          description: RUN de identificación de funcionario que registra acción de poder.
+          example: Juan Pérez
+
+    ExpedientePageResponse:
+      type: object
+      description: Resultado paginado de la búsqueda de expedientes
+      properties:
+        content:
+          type: array
+          description: Lista de expedientes de la página actual
+          items:
+            $ref: '#/components/schemas/ExpedienteResponse'
+
+        page:
+          type: integer
+          format: int32
+          description: Número de página actual (comienza en 0)
+          example: 0
+
+        size:
+          type: integer
+          format: int32
+          description: Cantidad de registros por página
+          example: 20
+
+        totalElements:
+          type: integer
+          format: int64
+          description: Total de registros encontrados
+          example: 125
+
+        totalPages:
+          type: integer
+          format: int32
+          description: Total de páginas disponibles
+          example: 7
+
+        first:
+          type: boolean
+          description: Indica si es la primera página
+          example: true
+
+        last:
+          type: boolean
+          description: Indica si es la última página
+          example: false
+
+
+    Dato:
+      type: object
+      properties:
+        codigo:
+          type: string
+          title: Código de dato
+          description: Identificador único del dato dentro del sistema.
+          example: RBD
+        descripcion:
+          type: string
+          title: Descripción del dato
+          description: Breve descripción del contenido o propósito del dato.
+          example: "99999"
+
+    Error:
+      type: object
+      properties:
+        timestamp:
+          type: string
+        estado:
+          type: string
+        error:
+          type: string
+        mensaje:
+          type: string
+        path:
+          type: string
+        tipo:
+          type: string
+        errores:
+          type: array
+          items:
+            type: string
+      required:
+        - timestamp
+        - estado
+        - error
+        - mensaje
+        - path
+        - tipo
+
+    CrearExpedienteRequest:
+      type: object
+      properties:
+        numero:
+          type: integer
+          format: int64
+          title: Número de expediente
+          description: Corresponde al número de orden interno dentro de una serie documental.
+          example: 2
+        titulo:
+          type: string
+          title: Título del Expediente
+          description: Palabra, frase o grupo de caracteres que se utiliza para denominar el expediente con el que se
+            está trabajando. Puede ser formal o atribuido.
+          example: Fiscalización Recursos SEP
+
+        mecanismo_incorporacion:
+          type: string
+          enum:
+            - MANUAL
+            - SERVICIO_WEB
+            - MIXTO
+            - REPOSITORIO_CIUDADANO
+            - INTEROPERABILIDAD
+          title: Mecanismos de incorporación del expediente
+          description: Expresa el mecanismo de incorporación de uno o más expedientes electrónicos al sistema de gestión
+            documental institucional, ya sea manual, carga masiva mediante servicios web, mixto u otro.
+          example: SERVICIO_WEB
+
+        oae_asociados:
+          minItems: 1
+          type: array
+          title: OAE Asociado
+          description: Identificación de relaciones específicas del expediente con OAE.
+          items:
+            $ref: '#/components/schemas/OAEAsociadoRequest'
+        otros_actores:
+          type: array
+          minItems: 1
+          title: Otros actores
+          description: Identificación de relaciones del documento con otros actores (persona natural o jurídica).
+          items:
+            $ref: '#/components/schemas/ActorRelacionadoRequest'
+
+        nivel_acceso:
+          type: string
+          enum:
+            - PUBLICO
+            - RESTRINGIDO
+            - SECRETO
+            - RESERVADO
+          title: Nivel de acceso
+          description: Indicación relativa al acceso y para consulta del expediente.
+          example: PUBLICO
+        fecha_fin_restriccion:
+          type: string
+          title: Fecha fin restricción
+          description: Es la fecha que determina el desbloqueo del expediente, en caso de existir.
+          format: date-time
+          example: 2026-04-23T14:47:20.4439494-04:00
+        caracter_sensible_privada:
+          type: boolean
+          title: Información de carácter sensible y/o privado
+          description: Identificación de que el expediente contiene información de carácter sensible o privada.
+          example: true
+
+        codigo_cpat:
+          type: string
+          title: Código CPAT asociado
+          description: Código identificador del procedimiento administrativo en el Catálogo de Procedimientos
+            Administrativos y Tramitaciones (CPAT).
+          example: PT-SUP00025-00015
+        nombre_procedimiento_administrativo:
+          type: string
+          title: Nombre del procedimiento administrativo asociado
+          description: Nombre del procedimiento administrativo asociado, en caso de no encontrarse incorporado al
+            Catálogo de Procedimientos Administrativos y Tramitaciones (CPAT).
+          example: Solicitud de autorización de canon de arriendo
+
+      required:
+        - mecanismo_incorporacion
+        - nivel_acceso
+        - caracter_sensible_privada
+        - numero
+        - titulo
+        - oae_asociados
+        - otros_actores
+        - codigo_cpat
+        - nombre_procedimiento_administrativo
+
+    OAEAsociadoRequest:
+      type: object
+      properties:
+        tipo_relacion:
+          type: string
+          enum:
+            - AUTOR_INSTITUCIONAL
+            - DESTINATARIO
+            - PRODUCTOR_GENERADOR
+            - CUSTODIA
+          title: Tipo de relación OAE
+          description: Relación establecida entre el expediente referenciado y el OAE.
+          example: CUSTODIA
+        codigo_oae:
+          type: integer
+          format: int32
+          title: Código de OAE productor
+          description: Identificación del OAE que, en el cumplimiento de sus funciones custodia, respalda o está
+            involucrado, en la gestión del expediente.
+          example: 46 (Gobierno Regional de la Región de La Araucanía)
+        nombre_oae:
+          type: string
+          title: Nombre OAE relacionado
+          description: Nombre institucional, en caso que sea el OAE productor que no esté registrado en el codificador.
+          example: Gobierno Regional de la Región de La Araucanía
+      required:
+        - tipo_relacion
+        - codigo_oae
+        - nombre_oae
+
+    ActorRelacionadoRequest:
+      type: object
+      properties:
+        relacion:
+          type: string
+          enum:
+            - RESPONSABLE
+            - INTERESADO
+            - AUTOR_CREADOR
+            - REFERIDO
+            - DESTINATARIO
+            - MINISTRO_FE
+          title: Tipo de relación con otros actores
+          description: Identificación del tipo de relación existente con el actor (persona natural o jurídica)
+            y el expediente. Es obligatorio para la identificación de interesados.
+          example: INTERESADO
+        tipo:
+          type: string
+          enum:
+            - CIUDADANO
+            - EXTRANJERO
+            - INSTITUCION_PRIVADA
+            - FUNCIONARIO
+          title: Tipo de actor relacionado
+          description: Identificación del actor relacionado (persona jurídica o natural). Es obligatorio para la
+            identificación de interesados.
+          example: CIUDADANO
+        run:
+          type: string
+          title: RUN/RUT Relacionado
+          description: RUN (Número de Cédula de identidad) de la persona o RUT (Rol Único Tributario) de la
+            institución privada a la que está relacionado el presente expediente o Nro Pasaporte en el caso de extranjeros.
+          example: 60100003-2
+        nombre:
+          type: string
+          title: Nombre del actor relacionado
+          description: Nombre de la persona natural o jurídica sobre la que versa el expediente, si es que no se cuenta
+            con la identificación del actor relacionado.
+          example: Julian Santelices Machuca
+      required:
+        - relacion
+        - tipo
+        - run
+        - nombre
+
+    ActuacionRequest:
+      type: object
+      properties:
+        tipo:
+          type: string
+          enum:
+            - ACTO_ADMINISTRATIVO
+            - NOTIFICACION
+            - RECEPCION_ENVIO_COMUNICACION_OFICIAL
+            - INTEROPERABILIDAD
+            - RECEPCION_SOLICITUD
+            - SUBCARPETA
+            - REGISTRO_PODER
+          title: Tipo de actuación
+          description: Tipo de actuación realizada.
+          example: ACTO_ADMINISTRATIVO
+        id_documento:
+          type: string
+          title: Identificador de Documento vinculado
+          description: Identificación del documento que conforma el presente expediente.
+          example: ...
+        fecha_incorporacion:
+          type: string
+          title: Fecha de la incorporación del expediente / documento
+          description: Fecha y hora de incorporación del documento o el expediente relacionado.
+            (Fecha y hora en formato aaaa-mm-dd hh:mm:ss (ISO 8601))
+          format: date-time
+          example: 2026-04-23T14:47:20.4439494-04:00
+        id_subcarpeta:
+          type: string
+          title: Identificador Subcarpeta
+          description: Se registra de forma automática al seleccionar un tipo de actuación Subcarpeta
+          example: ...
+        usuario_responsable:
+          type: string
+          title: Usuario responsable de la actuación
+          description: Usuario responsable de la actuación
+          example: matias.caro
+        descripcion:
+          type: string
+          title: Descripción de la actuación
+          description: Descripción de la actuación realizada en el expediente
+          example: Valida documentación asociada a la solicitud
+      required:
+        - tipo
+        - fecha_incorporacion
+        - usuario_responsable
+        - descripcion
+#      anyOf:
+#        - required: [ id_documento ]
+#        - required: [ id_subcarpeta ]
+
+    PoderRequest:
+      type: object
+      properties:
+        tipo_accion:
+          type: string
+          enum:
+            - OTORGA
+            - CADUCA
+            - ANULA
+            - MODIFICA
+          title: Tipo de acción
+          description: Tipo de acción asociada a gestión de poderes; otorga consulta, otorga total, otorga incorporación,
+            caduca o anula.
+          example: 1 (Otorga consulta)
+        fecha_registro:
+          type: string
+          title: Fecha de registro
+          description: Es la fecha en que se incorpora al expediente el registro de la acción del poder.
+            (formato aaaa-mm-dd hh:mm:ss (ISO 8601))
+          format: date-time
+          example: 2026-04-23T14:47:20.4439494-04:00
+        descripcion:
+          type: string
+          title: Descripción del poder
+          description: Texto descriptivo del poder registrado.
+          example: Otorga poder de consulta a don Juan juanes para el contenido del expediente del procedimiento.
+        rut_interesado:
+          type: string
+          title: RUT interesado
+          description: RUN del interesado del procedimiento administrativo que otorga el poder.
+          example: 9999999-9
+        run_funcionario:
+          type: string
+          title: RUN Funcionario responsable
+          description: RUN de identificación de funcionario que registra acción de poder.
+          example: Juan Pérez
+      required:
+        - tipo_accion
+        - fecha_registro
+        - descripcion
+        - rut_interesado
+        - run_funcionario
+
+  #securitySchemes:
+  #  bearerAuth: # arbitrary name for the security scheme
+  #    type: http
+  #    scheme: bearer
+  #    bearerFormat: JWT # optional, arbitrary value for documentation purposes
+
+
+#security:
+#  - bearerAuth: [] # use the same name as above
