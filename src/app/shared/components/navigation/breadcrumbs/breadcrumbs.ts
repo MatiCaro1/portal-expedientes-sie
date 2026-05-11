@@ -17,7 +17,7 @@ import { filter } from 'rxjs/operators';
   templateUrl: './breadcrumbs.html',
   styleUrls: ['./breadcrumbs.css']
 })
-export class BreadcrumbsComponent implements OnInit {
+export class Breadcrumbs implements OnInit {
 
   breadcrumbs: any[] = [];
 
@@ -28,55 +28,55 @@ export class BreadcrumbsComponent implements OnInit {
 
   ngOnInit(): void {
 
-  // Primera carga
-  this.breadcrumbs = this.buildBreadcrumbs(this.route.root);
+    // Primera carga
+    this.breadcrumbs = this.buildBreadcrumbs(this.route.root);
 
-  // Cambios de navegación
-  this.router.events
-    .pipe(
-      filter(event => event instanceof NavigationEnd)
-    )
-    .subscribe(() => {
+    // Cambios de navegación
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd)
+      )
+      .subscribe(() => {
 
-      this.breadcrumbs = this.buildBreadcrumbs(this.route.root);
+        this.breadcrumbs = this.buildBreadcrumbs(this.route.root);
 
-    });
-
-}
-
-  private buildBreadcrumbs(
-  route: ActivatedRoute,
-  url: string = '',
-  breadcrumbs: any[] = []
-): any[] {
-
-  for (const child of route.children) {
-
-    const routeURL = child.snapshot.url
-      .map(segment => segment.path)
-      .join('/');
-
-    if (routeURL) {
-      url += `/${routeURL}`;
-    }
-
-    const label = child.snapshot.data['breadcrumb'];
-
-    if (label) {
-      breadcrumbs.push({
-        label,
-        route: url
       });
-    }
 
-    this.buildBreadcrumbs(
-      child,
-      url,
-      breadcrumbs
-    );
   }
 
-  return breadcrumbs;
-}
+  private buildBreadcrumbs(
+    route: ActivatedRoute,
+    url: string = '',
+    breadcrumbs: any[] = []
+  ): any[] {
+
+    for (const child of route.children) {
+
+      const routeURL = child.snapshot.url
+        .map(segment => segment.path)
+        .join('/');
+
+      if (routeURL) {
+        url += `/${routeURL}`;
+      }
+
+      const label = child.snapshot.data['breadcrumb'];
+
+      if (label) {
+        breadcrumbs.push({
+          label,
+          route: url
+        });
+      }
+
+      this.buildBreadcrumbs(
+        child,
+        url,
+        breadcrumbs
+      );
+    }
+
+    return breadcrumbs;
+  }
 
 }
